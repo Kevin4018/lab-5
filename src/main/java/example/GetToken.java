@@ -1,5 +1,7 @@
 package example;
 
+import java.io.IOException;
+
 /**
  * Class for getting your Grade API token.
  */
@@ -12,10 +14,17 @@ public class GetToken {
     public static void main(String[] args) {
         GetExample example = new GetExample();
 
-        String gradeAPISignUpURL = "https://grade-apis.panchen.ca/signUp";
-        // TODO Task 1: use the run method to get your Grade API token (or obtain your token through a web browser).
+        String gradeAPISignUpURL = "https://grade-apis.panchen.ca/signUp?username=dma40";
         String response = "";
-        // response = example.run( ...)
+
+        try {
+            response = example.run(gradeAPISignUpURL);
+        }
+
+        catch (IOException exception) {
+            System.err.println(exception.getMessage());
+        }
+
         System.out.println(response);
     }
 }
