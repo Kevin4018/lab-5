@@ -248,12 +248,12 @@ public class MongoGradeDataBase implements GradeDataBase {
 
     @Override
     public Team getMyTeam() {
-        final OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+
         final Request request = new Request.Builder()
                 .url(String.format("%s/team", API_URL))
                 .get()
-                .addHeader("Authorization", getAPIToken())
+                .addHeader(TOKEN, getAPIToken())
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .build();
 
@@ -264,8 +264,9 @@ public class MongoGradeDataBase implements GradeDataBase {
             if(responseBody.getInt(STATUS_CODE) == SUCCESS_CODE){
                 final JSONObject team = responseBody.getJSONObject("team");
                 final JSONArray membersArray = team.getJSONArray("members");
+
                 final String[] members = new String[membersArray.length()];
-                for (int i = 0; i < membersArray.length(); i++) {
+                for(int i = 0; i < membersArray.length(); i++){
                     members[i] = membersArray.getString(i);
                 }
 
@@ -276,11 +277,11 @@ public class MongoGradeDataBase implements GradeDataBase {
             }
 
             else{
-                throw new RuntimeException(responseBody.getString(MESSAGE));
+                throw new RuntimeException(responseBody.optString(MESSAGE, "Unknown error"));
             }
 
-        } catch (IOException | JSONException event) {
-            throw new RuntimeException(event);
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 }
