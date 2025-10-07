@@ -50,6 +50,7 @@ public class Application {
         final JoinTeamUseCase joinTeamUseCase = config.joinTeamUseCase();
         final LeaveTeamUseCase leaveTeamUseCase = config.leaveTeamUseCase();
         final GetAverageGradeUseCase getAverageGradeUseCase = config.getAverageGradeUseCase();
+        final GetTopGradeUseCase getTopGradeUseCase = config.getTopGradeUseCase();
 
         // this is the code that runs to set up our GUI
         SwingUtilities.invokeLater(() -> {
@@ -65,7 +66,7 @@ public class Application {
             final JPanel logGradeCard = createLogGradeCard(frame, logGradeUseCase);
             final JPanel formTeamCard = createFormTeamCard(frame, formTeamUseCase);
             final JPanel joinTeamCard = createJoinTeamCard(frame, joinTeamUseCase);
-            final JPanel manageTeamCard = createManageTeamCard(frame, leaveTeamUseCase, getAverageGradeUseCase);
+            final JPanel manageTeamCard = createManageTeamCard(frame, leaveTeamUseCase, getAverageGradeUseCase, getTopGradeUseCase);
 
             cardPanel.add(defaultCard, "DefaultCard");
             cardPanel.add(getGradeCard, "GetGradeCard");
@@ -318,7 +319,7 @@ public class Application {
 
 
     private static JPanel createManageTeamCard(JFrame jFrame, LeaveTeamUseCase leaveTeamUseCase,
-                                               GetAverageGradeUseCase getAverageGradeUseCase) {
+                                               GetAverageGradeUseCase getAverageGradeUseCase, GetTopGradeUseCase getTopGradeUseCase) {
         final JPanel theCard = new JPanel();
         theCard.setLayout(new GridLayout(ROWS, COLS));
         final JTextField courseField = new JTextField(20);
@@ -355,7 +356,7 @@ public class Application {
             public void actionPerformed(ActionEvent e) {
                 final String course = courseField.getText();
                 try {
-                    final float top = GetTopGradeUseCase.getAverageGrade(course);
+                    final float top = getTopGradeUseCase.getTopGrade(course);
                     JOptionPane.showMessageDialog(jFrame, "Top Grade: " + top);
                     courseField.setText("");
                 }
